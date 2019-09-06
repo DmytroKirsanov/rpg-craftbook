@@ -7,7 +7,14 @@ const config = {
             user: 'snoop',
             password: ''
         },
-        port: 3030
+        port: 3030,
+        winston: {
+            level: 'info',
+            maxsize: 0.5*1024*1024,
+            maxFiles: 1,
+            tailable: true,
+            maxRetries: 1
+        }
     }
 };
 
