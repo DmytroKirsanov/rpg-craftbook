@@ -3,7 +3,7 @@ const bodyParser = require('body-parser'),
     routes = require('../routes');
 
 module.exports.loadExpress = (app) => {
-    app.use(bodyParser.urlencoded({extended: false}));
+    app.use(bodyParser.urlencoded({extended: true}));
     app.use(bodyParser.json());
     app.use(cors());
     app.use(routes);
