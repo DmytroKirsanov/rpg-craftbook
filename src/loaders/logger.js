@@ -22,7 +22,7 @@ module.exports = createLogger({
         new transports.Console({
             format: format.combine(
                 format.colorize(),
-                format.printf(info => `${info.level}: [${info.label}] ${info.message}`)
+                format.printf(info => `${info.level}: ${info.message}`)
             )
         }),
         new transports.File({
@@ -32,7 +32,7 @@ module.exports = createLogger({
             tailable: true,
             maxRetries: 1,
             format: format.combine(
-                format.printf(info => `${info.timestamp} ${info.level.toUpperCase()}: [${info.label}] ${info.message}`)
+                format.printf(info => `${info.timestamp} ${info.level.toUpperCase()}: ${info.message}`)
             )
         })
     ]

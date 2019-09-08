@@ -11,7 +11,6 @@ module.exports = class GamesController {
         try {
             res.json(await gamesService.createGame({name: body.name, version: body.version}));
         } catch (e) {
-            this.logger.debug('GamesController loaded');
             next(e);
         }
     };

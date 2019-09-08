@@ -8,6 +8,7 @@ const config = {
             password: ''
         },
         port: 3030,
+        jwtSecret: 'secret',
         winston: {
             level: 'debug',
             maxsize: 0.5*1024*1024,
