@@ -9,7 +9,7 @@ const config = {
         },
         port: 3030,
         winston: {
-            level: 'info',
+            level: 'debug',
             maxsize: 0.5*1024*1024,
             maxFiles: 1,
             tailable: true,
