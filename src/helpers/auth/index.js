@@ -20,5 +20,14 @@ module.exports = {
             id: id,
             exp: parseInt(expirationDate.getTime() / 1000, 10),
         }, config.jwtSecret);
+    },
+
+    getTokenFromHeaders (req) {
+        const { headers: { authorization } } = req;
+
+        if(authorization && authorization.split(' ')[0] === 'Token') {
+            return authorization.split(' ')[1];
+        }
+        return null;
     }
 };

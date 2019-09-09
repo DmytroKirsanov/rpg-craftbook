@@ -1,5 +1,3 @@
-const passport = require('passport');
-
 module.exports = class AuthController {
     constructor(container) {
         this.userService = container.get('UserService');
@@ -16,16 +14,9 @@ module.exports = class AuthController {
         }
     }
 
-    login(req, res, next) {
-        return passport.authenticate('local', { session: false }, (err, {id, email}, info) => {
-            if (err) {
-                return next(err);
-            }
-            if (id) {
-                return res.json({id, email, token: this.authHelpers.generateJWT({id, email})});
-            }
-            return next(new Error('Invalid password or email.'));
-        })(req, res, next);
+    login(req, res) {
+        const {id, email} = req.user;
+        res.json({id, email, token: this.authHelpers.generateJWT({id, email})});
     }
 
     async getAuthed(req, res, next) {

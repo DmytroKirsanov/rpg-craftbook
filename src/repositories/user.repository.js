@@ -6,14 +6,14 @@ module.exports = class UserRepository {
     }
 
     async createUser({email, password, salt}) {
-        const query = this.pgp.helpers.insert({email, password, salt}, null, 'user') + ' returning user_id as id';
+        const query = this.pgp.helpers.insert({email, password, salt}, null, 'account') + ' returning account_id as id';
         this.logger.debug(`[SQL]: ${query}`);
         return this.db.one(query);
     }
 
     async findByEmail(email) {
-        const query = 'select * from public."user" as u where u.email = $1';
+        const query = this.pgp.as.format('select * from account where email = $1', email);
         this.logger.debug(`[SQL]: ${query}`);
-        return this.db.one(query, email);
+        return this.db.oneOrNone(query, email);
     }
 };

@@ -9,11 +9,14 @@ module.exports.preparePassport = () => {
         usernameField: 'email',
         passwordField: 'password',
     }, async (email, password, done) => {
-        const user = await UserService.findByEmail(email);
-        if (!user || !authHelpers.validatePassword(password, user)) {
-            return done(null, false, {errors: {'email or password': 'is invalid'}});
+        try {
+            const user = await UserService.findByEmail(email);
+            if (!user || !authHelpers.validatePassword(password, user)) {
+                return done(new Error('invalid credentials'));
+            }
+            return done(null, user);
+        } catch (e) {
+            return done(e);
         }
-
-        return done(null, user);
     }));
 };

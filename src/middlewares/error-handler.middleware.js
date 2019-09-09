@@ -4,11 +4,20 @@ module.exports = class ErrorHandlerMiddleware {
         this.responseHelpers = container.get('responseHelpers');
     }
 
-    handleError(err, req, res, next) {
+    handleError(err, req, res) {
         this.logger.error(err.message);
-        if (err.message === 'validation error') {
-            return res.send(this.responseHelpers.validationErrorResponse(err));
+        switch (err.message) {
+            case 'validation error':
+                res.send(this.responseHelpers.validationErrorResponse(err));
+                break;
+            case 'invalid credentials':
+                res.send(this.responseHelpers.invalidCredentialsResponse());
+                break;
+            case 'No authorization token was found':
+                res.send(this.responseHelpers.unauthorizedResponse());
+                break;
+            default:
+                res.send(this.responseHelpers.unexpectedErrorResponse());
         }
-        res.send(this.responseHelpers.unexpectedErrorResponse());
     }
 };
