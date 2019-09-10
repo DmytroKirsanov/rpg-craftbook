@@ -6,7 +6,7 @@ module.exports = class UserRepository {
     }
 
     async createUser({email, password, salt}) {
-        const query = this.pgp.helpers.insert({email, password, salt}, null, 'account') + ' returning account_id as id';
+        const query = this.pgp.helpers.insert({email, password, salt}, null, 'account') + ' returning *';
         this.logger.debug(`[SQL]: ${query}`);
         return this.db.one(query);
     }

@@ -4,6 +4,7 @@ const Container = require('typedi').Container,
     logger = require('./logger'),
     responseHelpers = require('../helpers/response'),
     authHelpers = require('../helpers/auth'),
+    dbHelper = require('../helpers/db'),
     services = require('../services'),
     repositories = require('../repositories'),
     controllers = require('../controllers'),
@@ -16,6 +17,7 @@ module.exports.injectDependencies = (config) => {
     Container.set('logger', logger);
     Container.set('responseHelpers', responseHelpers);
     Container.set('authHelpers', authHelpers);
+    Container.set('dbHelper', dbHelper);
     Object.keys(repositories)
         .forEach(key => Container.set(key, new repositories[key](Container)));
     Object.keys(services)

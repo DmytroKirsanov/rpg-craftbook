@@ -1,6 +1,6 @@
 module.exports = class ItemsController {
 
-    constructor(Container) {
+    constructor(container) {
     }
 
     getItem(req, res) {

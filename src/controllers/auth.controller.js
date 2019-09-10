@@ -2,13 +2,15 @@ module.exports = class AuthController {
     constructor(container) {
         this.userService = container.get('UserService');
         this.authHelpers = container.get('authHelpers');
+        this.responseHelpers = container.get('responseHelpers');
     }
 
     async register(req, res, next) {
         const {body: {email, password}} = req;
         try {
             const {id} = await this.userService.createUser(email, password);
-            res.json({id, email, token: this.authHelpers.generateJWT({id, email})})
+            const result = {id, email, token: this.authHelpers.generateJWT({id, email})};
+            res.json(this.responseHelpers.successResponse(result));
         } catch (e) {
             next(e);
         }
@@ -16,7 +18,8 @@ module.exports = class AuthController {
 
     login(req, res) {
         const {id, email} = req.user;
-        res.json({id, email, token: this.authHelpers.generateJWT({id, email})});
+        const result = {id, email, token: this.authHelpers.generateJWT({id, email})};
+        res.json(this.responseHelpers.successResponse(result));
     }
 
     async getAuthed(req, res, next) {

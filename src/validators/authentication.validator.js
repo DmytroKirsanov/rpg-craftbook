@@ -20,7 +20,7 @@ module.exports = class AuthenticationValidator {
         return jwt({
             secret: config.jwtSecret,
             userProperty: 'payload',
-            getToken: (req) => this.authHelper.getTokenFromHeaders(req),
+            getToken: (req) => this.authHelpers.getTokenFromHeaders(req),
             credentialsRequired: false
         })
     }
@@ -30,6 +30,18 @@ module.exports = class AuthenticationValidator {
             body: {
                 email: this.joi.string().email().trim().required(),
                 password: this.joi.string().min(6).required()
+            }
+        }
+    }
+
+    isAdmin() {
+        return (req, res, next) => {
+            const token = this.authHelpers.getTokenFromHeaders(req);
+            try {
+                const {aLevel} = this.authHelpers.decodeJWT(token);
+                aLevel > 0 ? next() : next(new Error('forbidden'))
+            } catch (e) {
+                next(e);
             }
         }
     }

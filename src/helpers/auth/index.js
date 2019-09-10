@@ -10,16 +10,21 @@ module.exports = {
     generateSalt: () => {
         return crypto.randomBytes(16).toString('hex')
     },
-    generateJWT: ({id, email}) => {
+    generateJWT: ({account_id, email, admin_level}) => {
         const today = new Date();
         const expirationDate = new Date(today);
         expirationDate.setDate(today.getDate() + 60);
 
         return jwt.sign({
             email: email,
-            id: id,
-            exp: parseInt(expirationDate.getTime() / 1000, 10),
+            aLevel: admin_level,
+            id: account_id,
+            exp: parseInt(expirationDate.getTime() / 1000, 10)
         }, config.jwtSecret);
+    },
+
+    decodeJWT: (token) => {
+        return jwt.verify(token, config.jwtSecret);
     },
 
     getTokenFromHeaders (req) {

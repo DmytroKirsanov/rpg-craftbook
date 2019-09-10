@@ -16,6 +16,9 @@ module.exports = class ErrorHandlerMiddleware {
             case 'No authorization token was found':
                 res.send(this.responseHelpers.unauthorizedResponse());
                 break;
+            case 'forbidden':
+                res.send(this.responseHelpers.forbiddenResponse());
+                break;
             default:
                 res.send(this.responseHelpers.unexpectedErrorResponse());
         }
