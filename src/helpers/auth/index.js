@@ -10,7 +10,7 @@ module.exports = {
     generateSalt: () => {
         return crypto.randomBytes(16).toString('hex')
     },
-    generateJWT: ({account_id, email, admin_level}) => {
+    generateJWT: ({account_id, email, admin_level, locale}) => {
         const today = new Date();
         const expirationDate = new Date(today);
         expirationDate.setDate(today.getDate() + 60);
@@ -19,6 +19,7 @@ module.exports = {
             email: email,
             aLevel: admin_level,
             id: account_id,
+            locale,
             exp: parseInt(expirationDate.getTime() / 1000, 10)
         }, config.jwtSecret);
     },

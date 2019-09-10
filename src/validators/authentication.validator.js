@@ -34,12 +34,13 @@ module.exports = class AuthenticationValidator {
         }
     }
 
-    isAdmin() {
+    isAdmin(levelRequired) {
         return (req, res, next) => {
             const token = this.authHelpers.getTokenFromHeaders(req);
+            levelRequired = levelRequired || 1;
             try {
                 const {aLevel} = this.authHelpers.decodeJWT(token);
-                aLevel > 0 ? next() : next(new Error('forbidden'))
+                aLevel >= levelRequired ? next() : next(new Error('forbidden'))
             } catch (e) {
                 next(e);
             }

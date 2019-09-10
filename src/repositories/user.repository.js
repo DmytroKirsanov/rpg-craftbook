@@ -5,8 +5,8 @@ module.exports = class UserRepository {
         this.db = container.get('db');
     }
 
-    async createUser({email, password, salt}) {
-        const query = this.pgp.helpers.insert({email, password, salt}, null, 'account') + ' returning *';
+    async createUser(dto) {
+        const query = this.pgp.helpers.insert(dto, null, 'account') + ' returning *';
         this.logger.debug(`[SQL]: ${query}`);
         return this.db.one(query);
     }

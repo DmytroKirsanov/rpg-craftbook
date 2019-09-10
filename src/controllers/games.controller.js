@@ -16,9 +16,13 @@ module.exports = class GamesController {
         }
     };
 
-    async getGames(req, res, nex) {
-        const {name, version} = req.query;
-
-        res.json({name})
+    async getGames(req, res, next) {
+        const dto = req.query;
+        try {
+            const games = await this.gamesService.getGamesByNameAndVersionDto(dto);
+            res.json(games);
+        } catch (e) {
+            next(e);
+        }
     }
 };

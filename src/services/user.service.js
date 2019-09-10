@@ -5,11 +5,14 @@ module.exports = class UserService {
         this.authHelper = container.get('authHelpers');
     }
 
-    async createUser(email, password) {
+    async createUser(dto) {
         const salt = this.authHelper.generateSalt();
-        password = this.authHelper.encryptPassword(password, salt);
+        dto = {...dto,
+            password: this.authHelper.encryptPassword(dto.password, salt),
+            salt,
+            locale: dto.locale || 'en_US'};
         try {
-            return await this.userRepository.createUser({email, password, salt});
+            return await this.userRepository.createUser(dto);
         } catch (e) {
             this.logger.error(`[UserService.createUser] ${e.message}`);
             throw e;

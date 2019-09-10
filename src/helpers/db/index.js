@@ -14,7 +14,7 @@ module.exports = class DbHelper {
     whereBuilder(opts, alias) {
         if (this.optionsEmpty(opts)) return '';
         alias = alias ? alias + '.' : '';
-        return Object.keys(opts).map(key => this.selectorBuilder(key, opts[key]), alias).join(' AND ');
+        return Object.keys(opts).map(key => this.selectorBuilder(key, opts[key], alias)).join(' AND ');
     }
 
     selectorBuilder(key, value, alias) {
@@ -30,5 +30,25 @@ module.exports = class DbHelper {
             }
         }
         return '';
+    }
+
+    optionsLikeProperty(options, keys) {
+        const result = {};
+        if (!keys) {
+            Object.keys(options).forEach(key => result[`~${key}`] = options[key]);
+            return result;
+        } else if (Array.isArray(keys)) {
+            keys.forEach(key => {
+                if (options[key]) {
+                    result[`~${key}`] = options[key];
+                    delete options[key];
+                }
+            });
+            return {...options, ...result};
+        } else {
+            result[`~${keys}`] = options[keys];
+            delete options[keys];
+            return {...options, ...result};
+        }
     }
 };

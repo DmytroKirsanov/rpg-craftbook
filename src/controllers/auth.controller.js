@@ -6,19 +6,18 @@ module.exports = class AuthController {
     }
 
     async register(req, res, next) {
-        const {body: {email, password}} = req;
+        const {body: {email, password, locale}} = req;
         try {
-            const {id} = await this.userService.createUser(email, password);
-            const result = {id, email, token: this.authHelpers.generateJWT({id, email})};
+            const account = await this.userService.createUser({email, password, locale});
+            const result = {token: this.authHelpers.generateJWT(account)};
             res.json(this.responseHelpers.successResponse(result));
         } catch (e) {
             next(e);
         }
     }
 
-    login(req, res) {
-        const {id, email} = req.user;
-        const result = {id, email, token: this.authHelpers.generateJWT({id, email})};
+    login({user}, res) {
+        const result = {token: this.authHelpers.generateJWT(user)};
         res.json(this.responseHelpers.successResponse(result));
     }
 

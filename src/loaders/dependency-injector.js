@@ -17,7 +17,7 @@ module.exports.injectDependencies = (config) => {
     Container.set('logger', logger);
     Container.set('responseHelpers', responseHelpers);
     Container.set('authHelpers', authHelpers);
-    Container.set('dbHelper', dbHelper);
+    Container.set('dbHelper', new dbHelper());
     Object.keys(repositories)
         .forEach(key => Container.set(key, new repositories[key](Container)));
     Object.keys(services)
