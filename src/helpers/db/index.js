@@ -20,7 +20,7 @@ module.exports = class DbHelper {
     selectorBuilder(key, value, alias) {
         if (Array.isArray(value)) {
             return `${alias + key.replace('!', '')} ${key.indexOf('!') === 0 ? 'NOT': ''} IN ('${value.join("','")}')`;
-        } else if (typeof value === 'string' || 'number') {
+        } else if (typeof value === 'string' || typeof value === 'number') {
             if (key[0] === '!') {
                 return `${alias + key.slice(1)}!=\'${value}\'`;
             } else if (key[0] === '~') {
