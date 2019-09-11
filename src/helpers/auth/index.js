@@ -4,21 +4,24 @@ const config = require('../../config');
 
 module.exports = {
     encryptPassword: (password, salt) => crypto.pbkdf2Sync(password.toString(), salt, 10000, 512, 'sha512').toString('hex'),
-    validatePassword: (validatedPassword, {password, salt}) => {
-        return password === crypto.pbkdf2Sync(validatedPassword.toString(), salt, 10000, 512, 'sha512').toString('hex');
+
+    validatePassword: (passwordToValidate, {password, salt}) => {
+        return password === crypto.pbkdf2Sync(passwordToValidate.toString(), salt, 10000, 512, 'sha512').toString('hex');
     },
+
     generateSalt: () => {
         return crypto.randomBytes(16).toString('hex')
     },
+
     generateJWT: ({account_id, email, admin_level, locale}) => {
         const today = new Date();
         const expirationDate = new Date(today);
         expirationDate.setDate(today.getDate() + 60);
 
         return jwt.sign({
+            id: account_id,
             email: email,
             aLevel: admin_level,
-            id: account_id,
             locale,
             exp: parseInt(expirationDate.getTime() / 1000, 10)
         }, config.jwtSecret);
