@@ -41,7 +41,9 @@ describe('Authentication Helpers Tests', () => {
             expect(aLevel).toBe(0);
             expect(locale).toBe('en');
             expect(secret).toBe('secret');
-            expect(59 > (new Date(exp).getDate() - now.getDate()) < 61).toBeTruthy();
+            const daysExp = (exp - now.getMilliseconds()) / (1000*60*60*24);
+            expect(17 < daysExp).toBeTruthy();
+            expect(daysExp < 19).toBeTruthy();
         });
         index.generateJWT({account_id: 111, email: 'email', admin_level: 0, locale: 'en'});
         expect(jwt.sign).toBeCalledTimes(1);
